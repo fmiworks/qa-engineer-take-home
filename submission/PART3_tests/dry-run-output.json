@@ -1,0 +1,360 @@
+﻿[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "fmi-works-functionality;verify-manager-is-able-to-delete-the-work-order",
+        "keyword": "Scenario",
+        "line": 8,
+        "name": "Verify Manager is able to delete the work order",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "Navigate to the FMI Works application",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:6"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "User select the role as \"manager\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:12"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "User clicks on the work order to delete",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:17"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "User should see a confirmation message",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:23"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@deleteWorkOrder",
+            "line": 7
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "fmi-works-functionality;verify-priorities-filters",
+        "keyword": "Scenario",
+        "line": 14,
+        "name": "Verify priorities filters",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "Navigate to the FMI Works application",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:6"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 15,
+            "name": "User select the role as \"works-user\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:12"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "User select the priority option \"Critical\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:28"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 17,
+            "name": "Work Order priority should be \"Critical\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:33"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 18,
+            "name": "User select the priority option \"High\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:28"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 19,
+            "name": "Work Order priority should be \"High\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:33"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "User select the priority option \"Medium\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:28"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 21,
+            "name": "Work Order priority should be \"Medium\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:33"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 22,
+            "name": "User select the priority option \"Low\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:28"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 23,
+            "name": "Work Order priority should be \"Low\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:33"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@workOrderPriority",
+            "line": 13
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "fmi-works-functionality;verify-james-wilson-(manager)-is-able-to-assigned-the-user",
+        "keyword": "Scenario",
+        "line": 30,
+        "name": "Verify James Wilson (Manager) is able to assigned the user",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "Navigate to the FMI Works application",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:6"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 31,
+            "name": "User select the role as \"manager\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:12"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 32,
+            "name": "Manager assigns the user to work order",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:38"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 33,
+            "name": "Work Order should be successfully assigned to the user",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Desktop\\Auto-27-03\\playwright-qa-engineer-task\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:43"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@assignedUser",
+            "line": 29
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "fmi-works-functionality",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "FMI Works functionality",
+    "tags": [
+      {
+        "name": "@smoke",
+        "line": 1
+      }
+    ],
+    "uri": "features\\workOrder.feature"
+  }
+]
