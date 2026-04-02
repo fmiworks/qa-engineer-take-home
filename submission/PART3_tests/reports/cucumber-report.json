@@ -1,0 +1,630 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "fmi-works-functionality;verify-manager-is-able-to-delete-the-work-order",
+        "keyword": "Scenario",
+        "line": 8,
+        "name": "Verify Manager is able to delete the work order",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 506476300
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "Navigate to the FMI Works application",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4154277399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "User select the role as \"manager\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7095878600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "User clicks on the work order to delete",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:17"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5370316800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "User should see a confirmation message",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:23"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1034154999
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 222588700
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@deleteWorkOrder",
+            "line": 7
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "fmi-works-functionality;verify-james-wilson-(manager)-is-able-to-assigned-the-user",
+        "keyword": "Scenario",
+        "line": 14,
+        "name": "Verify James Wilson (Manager) is able to assigned the user",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 481460500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "Navigate to the FMI Works application",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4146508600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 15,
+            "name": "User select the role as \"manager\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7065492500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "Manager assigns the user to work order",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:38"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1130222200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 17,
+            "name": "Work Order should be successfully assigned to the user",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:43"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2074070999
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 330249799
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@assignedUser",
+            "line": 13
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "fmi-works-functionality;the-workflow-should-ensure-all-expected-status-change-records-are-added",
+        "keyword": "Scenario",
+        "line": 20,
+        "name": "The workflow should ensure all expected status-change records are added",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 484654000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "Navigate to the FMI Works application",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4116805599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 21,
+            "name": "User select the role as \"coordinator\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7057176500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 22,
+            "name": "The work order status should be \"New Request\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2037558299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 23,
+            "name": "User transitions to \"Under Consideration\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:48"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3041434100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 24,
+            "name": "The work order status should be \"Under Consideration\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2029047099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 25,
+            "name": "User transitions to \"Pending Quote\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:48"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3033055100
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 26,
+            "name": "The work order status should be \"Pending Quote\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2022081599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 27,
+            "name": "User transitions to \"Scheduled\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:48"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3034399399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 28,
+            "name": "The work order status should be \"Scheduled\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2037574800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 29,
+            "name": "User transitions to \"Work In Progress\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:48"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3033560899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 30,
+            "name": "The work order status should be \"Work In Progress\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2029778000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 31,
+            "name": "User transitions to \"Delayed\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:48"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3033157900
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 32,
+            "name": "The work order status should be \"Delayed\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2022596999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 33,
+            "name": "User transitions to \"Work In Progress\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:48"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3038243400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 34,
+            "name": "The work order status should be \"Work In Progress\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2023510799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "User describe the action taken \"test Work Order\" and transitions to \"Completed\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:58"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1080731599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 37,
+            "name": "The work order status should be \"Completed\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2027351299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 38,
+            "name": "Transition status should not be visible",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:63"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1032121700
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 324619099
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@workflowStatusChange",
+            "line": 19
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "fmi-works-functionality;verify-priority-filters",
+        "keyword": "Scenario",
+        "line": 41,
+        "name": "Verify priority filters",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 472729600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "Navigate to the FMI Works application",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4127744099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 42,
+            "name": "User select the role as \"works-user\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7071415099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 43,
+            "name": "User select the priority option \"Critical\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2048085600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 44,
+            "name": "only the \"Critical\" Work Orders should be displayed",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:33"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1040150699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 45,
+            "name": "User select the priority option \"High\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2048093799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 46,
+            "name": "only the \"High\" Work Orders should be displayed",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:33"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1022474999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 47,
+            "name": "User select the priority option \"Medium\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2037099999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 48,
+            "name": "only the \"Medium\" Work Orders should be displayed",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:33"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1023444199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 49,
+            "name": "User select the priority option \"Low\"",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2032199699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 50,
+            "name": "only the \"Low\" Work Orders should be displayed",
+            "match": {
+              "location": "file:\\C:\\Users\\Admin\\Downloads\\submission\\submission\\PART3_tests\\features\\step_definitions\\workOrder.steps.js:33"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1043230599
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 313277700
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@priorityFilters",
+            "line": 40
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "fmi-works-functionality",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "FMI Works functionality",
+    "tags": [
+      {
+        "name": "@smoke",
+        "line": 1
+      }
+    ],
+    "uri": "features\\workOrder.feature"
+  }
+]
