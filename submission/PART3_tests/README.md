@@ -36,6 +36,19 @@ The framework is built using **Playwright** and follows a **fixture-based archit
 
 ---
 
+## Code Quality & Best Practices
+
+### Key Features
+- Fixture-based isolation prevents test interference. Each test gets its own setup and context.
+- Page Object Model and component pattern improve maintainability
+- Randomized test data ensures uniqueness
+- Step-wise assertions improve readability and debugging (test.step)
+- Console logging inside class methods improves traceability
+- Test Case IDs improve traceability
+- Parallel Execution Ready
+
+---
+
 ## Folder Structure
 
 ```
@@ -108,13 +121,14 @@ cd work-order-tests
 npm install
 ```
 
-3. **Install Playwright Browsers**
+3. **Install Playwright**
 
 ```bash
 npx playwright install
 ```
 
 4. **Run Tests**
+- Note: NO need to run the app server manually
 
 ```bash
 npx playwright test
@@ -123,7 +137,7 @@ npx playwright test
 5. **Run Specific Test File**
 
 ```bash
-npx playwright test tests/work-order-status-transitions.test.ts
+npx playwright test work-order-status-transitions.test.ts
 ```
 
 ---
@@ -147,35 +161,6 @@ npx playwright test tests/work-order-status-transitions.test.ts
 
 ### Notes
 - Failures are related to **form validation** and **dropdown cascading behavior**
-- Requires investigation on required field validation handling and cascading dropdown data loading
 
----
 
-## Code Quality & Best Practices
-
-### Strengths
-- Fixture-based isolation prevents test interference
-- Page Object Model and component pattern improve maintainability
-- Randomized test data ensures uniqueness
-- Step-wise assertions improve readability and debugging
-- Test Case IDs improve traceability
-
-### Recommendations
-- Remove hardcoded waits (`waitForTimeout`) and rely on auto-wait
-- Break long tests into smaller focused units
-- Integrate reports with CI dashboards
-- Consider adding API layer tests for faster regression
-- Ensure cleanup for test-created data
-- Stable locators with data attributes where possible
-
-### Patterns Used
-- Fixture Pattern (role-based, data setup) ✅
-- Page Object + Component Pattern ✅
-- Constants & Locators ✅
-- Randomized Test Data ✅
-- Test Case ID + Descriptive Names ✅
-- Step-wise Assertions ✅
-- Retry for Flaky Tests ✅
-- Auto Wait / Assertion Wait ✅
-- Parallel Execution Ready ✅
 
