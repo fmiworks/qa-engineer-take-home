@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FMI Works — Work Order Management</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f5f7; color: #1a1a2e; line-height: 1.5; }
+
+    /* Header */
+    .header { background: #1a1a2e; color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .header .role-switcher { display: flex; align-items: center; gap: 8px; }
+    .header .role-switcher label { font-size: 13px; opacity: 0.7; }
+    .header select { background: #2a2a4e; color: #fff; border: 1px solid #444; border-radius: 4px; padding: 4px 8px; font-size: 13px; }
+    .header .user-info { font-size: 12px; opacity: 0.6; margin-left: 12px; }
+
+    /* Layout */
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .panel { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 20px; }
+    .panel h2 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #1a1a2e; }
+
+    /* Status badges */
+    .status-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+    .status-new { background: #e3f2fd; color: #1565c0; }
+    .status-under-consideration { background: #fff3e0; color: #e65100; }
+    .status-pending-quote { background: #fce4ec; color: #c62828; }
+    .status-scheduled { background: #e8eaf6; color: #283593; }
+    .status-wip { background: #fff8e1; color: #f57f17; }
+    .status-completed { background: #e8f5e9; color: #2e7d32; }
+    .status-cancelled { background: #f5f5f5; color: #757575; }
+    .status-delayed { background: #fbe9e7; color: #bf360c; }
+
+    /* Priority badges */
+    .priority-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+    .priority-critical { background: #c62828; color: #fff; }
+    .priority-high { background: #ef6c00; color: #fff; }
+    .priority-medium { background: #f9a825; color: #1a1a2e; }
+    .priority-low { background: #66bb6a; color: #fff; }
+
+    /* Form */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 13px; font-weight: 500; color: #555; }
+    .form-group input, .form-group select, .form-group textarea { padding: 8px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; font-family: inherit; }
+    .form-group textarea { resize: vertical; min-height: 60px; }
+    .form-group.full-width { grid-column: 1 / -1; }
+    .form-group .char-count { font-size: 11px; color: #999; text-align: right; }
+    .form-group .char-count.over-limit { color: #c62828; font-weight: 600; }
+    .form-actions { margin-top: 16px; display: flex; gap: 8px; }
+
+    /* Buttons */
+    .btn { padding: 8px 16px; border: none; border-radius: 4px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+    .btn-primary { background: #1565c0; color: #fff; }
+    .btn-primary:hover { background: #0d47a1; }
+    .btn-secondary { background: #e0e0e0; color: #333; }
+    .btn-secondary:hover { background: #bdbdbd; }
+    .btn-danger { background: #c62828; color: #fff; }
+    .btn-danger:hover { background: #b71c1c; }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Table */
+    .wo-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .wo-table th { text-align: left; padding: 10px 12px; background: #f8f9fa; border-bottom: 2px solid #e0e0e0; font-weight: 600; color: #555; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .wo-table td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+    .wo-table tr:hover { background: #fafbfc; }
+    .wo-table tr[data-deleted="true"] { display: none; }
+
+    /* Filters */
+    .filters { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+    .filters select, .filters input { padding: 6px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; }
+    .filters label { font-size: 12px; color: #777; }
+
+    /* Detail panel */
+    .detail-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 100; }
+    .detail-overlay.active { display: flex; align-items: center; justify-content: center; }
+    .detail-panel { background: #fff; border-radius: 8px; width: 600px; max-height: 80vh; overflow-y: auto; padding: 24px; position: relative; }
+    .detail-panel h2 { margin-bottom: 12px; }
+    .detail-panel .close-btn { position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 20px; cursor: pointer; color: #999; }
+    .detail-field { margin-bottom: 12px; }
+    .detail-field label { font-size: 12px; color: #777; display: block; margin-bottom: 2px; }
+    .detail-field .value { font-size: 14px; }
+
+    /* Audit log */
+    .audit-log { margin-top: 16px; }
+    .audit-log h3 { font-size: 14px; margin-bottom: 8px; }
+    .audit-entry { font-size: 12px; color: #555; padding: 4px 0; border-bottom: 1px solid #f0f0f0; }
+    .audit-entry .timestamp { color: #999; margin-right: 8px; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; border-radius: 6px; color: #fff; font-size: 14px; z-index: 200; transform: translateY(80px); opacity: 0; transition: all 0.3s; }
+    .toast.visible { transform: translateY(0); opacity: 1; }
+    .toast.success { background: #2e7d32; }
+    .toast.error { background: #c62828; }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 40px; color: #999; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid #e0e0e0; }
+    .tab { padding: 10px 20px; font-size: 14px; font-weight: 500; color: #777; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+    .tab:hover { color: #333; }
+    .tab.active { color: #1565c0; border-bottom-color: #1565c0; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>FMI Works — Work Orders</h1>
+  <div class="role-switcher">
+    <label>Logged in as:</label>
+    <select id="roleSelect" data-testid="role-select">
+      <option value="coordinator">Sarah Chen (Coordinator)</option>
+      <option value="manager">James Wilson (Manager)</option>
+      <option value="stakeholder">Emily Parker (Stakeholder)</option>
+      <option value="works-user">David Kim (Works User)</option>
+      <option value="supplier">Mike's Electrical (Supplier)</option>
+    </select>
+    <span class="user-info" id="roleDescription"></span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <div class="tab active" data-tab="list" data-testid="tab-list">Work Orders</div>
+    <div class="tab" data-tab="create" data-testid="tab-create">Create New</div>
+  </div>
+
+  <!-- LIST TAB -->
+  <div class="tab-content active" id="tab-list">
+    <div class="panel">
+      <div class="filters">
+        <div>
+          <label>Status:</label>
+          <select id="filterStatus" data-testid="filter-status">
+            <option value="">All Statuses</option>
+            <option value="New Request">New Request</option>
+            <option value="Under Consideration">Under Consideration</option>
+            <option value="Pending Quote">Pending Quote</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Work In Progress">Work In Progress</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Delayed">Delayed</option>
+          </select>
+        </div>
+        <div>
+          <label>Priority:</label>
+          <select id="filterPriority" data-testid="filter-priority">
+            <option value="">All Priorities</option>
+            <option value="Critical">Critical</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+        <div>
+          <label>Search:</label>
+          <input type="text" id="filterSearch" placeholder="Search WO number or description..." data-testid="filter-search" style="width: 260px;" />
+        </div>
+      </div>
+
+      <table class="wo-table" data-testid="work-order-table">
+        <thead>
+          <tr>
+            <th>WO Number</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Assigned To</th>
+            <th>Created</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="woTableBody" data-testid="work-order-table-body">
+        </tbody>
+      </table>
+      <div class="empty-state" id="emptyState" style="display:none;" data-testid="empty-state">
+        No work orders found matching your filters.
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATE TAB -->
+  <div class="tab-content" id="tab-create">
+    <div class="panel">
+      <h2>Create Work Order</h2>
+      <form id="createForm" data-testid="create-form">
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="shortDesc">Short Description *</label>
+            <input type="text" id="shortDesc" maxlength="200" data-testid="input-short-desc" />
+            <div class="char-count"><span id="shortDescCount">0</span>/200</div>
+          </div>
+          <div class="form-group full-width">
+            <label for="fullDesc">Full Description</label>
+            <textarea id="fullDesc" data-testid="input-full-desc"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="site">Site *</label>
+            <select id="site" data-testid="select-site">
+              <option value="">Select site...</option>
+              <option value="site-1">Melbourne General Hospital</option>
+              <option value="site-2">Sunrise Aged Care</option>
+              <option value="site-3">Bayside Primary School</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="building">Building</label>
+            <select id="building" data-testid="select-building" disabled>
+              <option value="">Select building...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="floor">Floor</label>
+            <select id="floor" data-testid="select-floor" disabled>
+              <option value="">Select floor...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="room">Room</label>
+            <select id="room" data-testid="select-room" disabled>
+              <option value="">Select room...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="priority">Priority *</label>
+            <select id="priority" data-testid="select-priority">
+              <option value="">Select priority...</option>
+              <option value="Critical">Critical</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="source">Source</label>
+            <select id="source" data-testid="select-source">
+              <option value="Adhoc Request">Adhoc Request</option>
+              <option value="Planned Job">Planned Job</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" data-testid="btn-create-submit">Create Work Order</button>
+          <button type="reset" class="btn btn-secondary" data-testid="btn-create-reset">Clear</button>
+        </div>
+        <div id="formErrors" style="color: #c62828; font-size: 13px; margin-top: 8px;" data-testid="form-errors"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="detail-overlay" id="detailOverlay" data-testid="detail-overlay">
+  <div class="detail-panel" data-testid="detail-panel">
+    <button class="close-btn" id="detailClose" data-testid="detail-close">&times;</button>
+    <h2 id="detailTitle"></h2>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" data-testid="toast"></div>
+
+<script>
+// ============================================================
+// MOCK DATA & STATE
+// ============================================================
+
+const ROLES = {
+  'coordinator': { name: 'Sarah Chen', role: 'Works Coordinator', canCreate: true, canAssign: true, canChangeStatus: true, canCancel: false, canDelete: false, canViewAll: true },
+  'manager': { name: 'James Wilson', role: 'Works Manager', canCreate: true, canAssign: true, canChangeStatus: true, canCancel: true, canDelete: false, canViewAll: true },
+  'stakeholder': { name: 'Emily Parker', role: 'Stakeholder', canCreate: true, canAssign: false, canChangeStatus: false, canCancel: false, canDelete: false, canViewAll: false },
+  'works-user': { name: 'David Kim', role: 'Works User', canCreate: false, canAssign: false, canChangeStatus: true, canCancel: false, canDelete: false, canViewAll: false },
+  'supplier': { name: "Mike's Electrical", role: 'Supplier', canCreate: false, canAssign: false, canChangeStatus: true, canCancel: false, canDelete: false, canViewAll: false }
+};
+
+const VALID_TRANSITIONS = {
+  'New Request': ['Under Consideration', 'Cancelled'],
+  'Under Consideration': ['Pending Quote', 'Scheduled', 'Cancelled'],
+  'Pending Quote': ['Scheduled', 'Cancelled'],
+  'Scheduled': ['Work In Progress', 'Cancelled'],
+  'Work In Progress': ['Completed', 'Delayed', 'Cancelled'],
+  'Delayed': ['Work In Progress', 'Cancelled'],
+  'Completed': [],
+  'Cancelled': []
+};
+
+const LOCATIONS = {
+  'site-1': {
+    name: 'Melbourne General Hospital',
+    buildings: {
+      'bld-1': { name: 'Main Wing', floors: { 'flr-1': { name: 'Ground Floor', rooms: { 'rm-1': 'Reception', 'rm-2': 'Ward A', 'rm-3': 'Ward B' } }, 'flr-2': { name: 'Level 1', rooms: { 'rm-4': 'ICU', 'rm-5': 'Theatre 1' } } } },
+      'bld-2': { name: 'East Annex', floors: { 'flr-3': { name: 'Ground Floor', rooms: { 'rm-6': 'Pharmacy', 'rm-7': 'Lab' } } } }
+    }
+  },
+  'site-2': {
+    name: 'Sunrise Aged Care',
+    buildings: {
+      'bld-3': { name: 'Residential Block A', floors: { 'flr-4': { name: 'Ground Floor', rooms: { 'rm-8': 'Common Room', 'rm-9': 'Room 101', 'rm-10': 'Room 102' } } } }
+    }
+  },
+  'site-3': {
+    name: 'Bayside Primary School',
+    buildings: {
+      'bld-4': { name: 'Admin Building', floors: { 'flr-5': { name: 'Ground Floor', rooms: { 'rm-11': 'Main Office', 'rm-12': 'Staff Room' } } } },
+      'bld-5': { name: 'Classroom Block', floors: { 'flr-6': { name: 'Ground Floor', rooms: { 'rm-13': 'Room 1A', 'rm-14': 'Room 1B' } }, 'flr-7': { name: 'Level 1', rooms: { 'rm-15': 'Room 2A', 'rm-16': 'Room 2B' } } } }
+    }
+  }
+};
+
+const SUPPLIERS = [
+  { id: 'sup-1', name: "Mike's Electrical" },
+  { id: 'sup-2', name: 'PlumbRight Services' },
+  { id: 'sup-3', name: 'CleanCo Facilities' }
+];
+
+const EMPLOYEES = [
+  { id: 'emp-1', name: 'David Kim' },
+  { id: 'emp-2', name: 'Sarah Chen' },
+  { id: 'emp-3', name: 'Tom Richards' }
+];
+
+let currentRole = 'coordinator';
+let woCounter = 4821;
+let workOrders = [];
+
+function generateUuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+function initSeedData() {
+  const now = new Date();
+  workOrders = [
+    {
+      uuid: generateUuid(), woNumber: 'WO-2026-004815', shortDesc: 'Flickering lights in Ward A',
+      fullDesc: 'Multiple fluorescent tubes in Ward A are flickering intermittently. Affecting patient comfort and staff visibility.',
+      site: 'site-1', building: 'bld-1', floor: 'flr-1', room: 'rm-2',
+      priority: 'High', source: 'Adhoc Request', status: 'Work In Progress',
+      assignedTo: { type: 'supplier', id: 'sup-1', name: "Mike's Electrical" },
+      createdBy: 'Sarah Chen', createdDate: new Date(now - 5 * 86400000).toISOString(),
+      lifecycle: 0, auditLog: [
+        { timestamp: new Date(now - 5 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Created work order' },
+        { timestamp: new Date(now - 4 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Status changed from New Request to Under Consideration' },
+        { timestamp: new Date(now - 3 * 86400000).toISOString(), user: 'Sarah Chen', action: "Assigned to Mike's Electrical" },
+        { timestamp: new Date(now - 3 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Status changed from Under Consideration to Scheduled' },
+        { timestamp: new Date(now - 1 * 86400000).toISOString(), user: "Mike's Electrical", action: 'Status changed from Scheduled to Work In Progress' }
+      ]
+    },
+    {
+      uuid: generateUuid(), woNumber: 'WO-2026-004816', shortDesc: 'Broken window latch — Room 101',
+      fullDesc: 'Window latch in Room 101 is broken. Resident has reported draft coming through. Needs urgent repair for resident comfort.',
+      site: 'site-2', building: 'bld-3', floor: 'flr-4', room: 'rm-9',
+      priority: 'Critical', source: 'Adhoc Request', status: 'New Request',
+      assignedTo: null,
+      createdBy: 'Emily Parker', createdDate: new Date(now - 1 * 86400000).toISOString(),
+      lifecycle: 0, auditLog: [
+        { timestamp: new Date(now - 1 * 86400000).toISOString(), user: 'Emily Parker', action: 'Created work order' }
+      ]
+    },
+    {
+      uuid: generateUuid(), woNumber: 'WO-2026-004817', shortDesc: 'Annual fire system inspection',
+      fullDesc: 'Scheduled annual fire system inspection for all buildings. Covers sprinklers, alarms, and emergency lighting.',
+      site: 'site-1', building: '', floor: '', room: '',
+      priority: 'Medium', source: 'Planned Job', status: 'Pending Quote',
+      assignedTo: null,
+      createdBy: 'James Wilson', createdDate: new Date(now - 10 * 86400000).toISOString(),
+      lifecycle: 0, auditLog: [
+        { timestamp: new Date(now - 10 * 86400000).toISOString(), user: 'James Wilson', action: 'Created work order' },
+        { timestamp: new Date(now - 9 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Status changed from New Request to Under Consideration' },
+        { timestamp: new Date(now - 7 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Status changed from Under Consideration to Pending Quote' }
+      ]
+    },
+    {
+      uuid: generateUuid(), woNumber: 'WO-2026-004818', shortDesc: 'Leaking tap in staff room',
+      fullDesc: 'Kitchen tap in the staff room is leaking continuously. Water pooling on the bench.',
+      site: 'site-3', building: 'bld-4', floor: 'flr-5', room: 'rm-12',
+      priority: 'Low', source: 'Adhoc Request', status: 'Completed',
+      assignedTo: { type: 'supplier', id: 'sup-2', name: 'PlumbRight Services' },
+      createdBy: 'Sarah Chen', createdDate: new Date(now - 20 * 86400000).toISOString(),
+      dateCompleted: new Date(now - 14 * 86400000).toISOString(), actionTaken: 'Replaced tap washer and tightened fittings.',
+      lifecycle: 0, auditLog: [
+        { timestamp: new Date(now - 20 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Created work order' },
+        { timestamp: new Date(now - 19 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Assigned to PlumbRight Services' },
+        { timestamp: new Date(now - 19 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Status changed from New Request to Scheduled' },
+        { timestamp: new Date(now - 16 * 86400000).toISOString(), user: 'PlumbRight Services', action: 'Status changed from Scheduled to Work In Progress' },
+        { timestamp: new Date(now - 14 * 86400000).toISOString(), user: 'PlumbRight Services', action: 'Status changed from Work In Progress to Completed' }
+      ]
+    },
+    {
+      uuid: generateUuid(), woNumber: 'WO-2026-004819', shortDesc: 'Repaint corridor walls — East Annex',
+      fullDesc: 'Corridor walls in East Annex are scuffed and need repainting. Low priority cosmetic work.',
+      site: 'site-1', building: 'bld-2', floor: 'flr-3', room: '',
+      priority: 'Low', source: 'Adhoc Request', status: 'Cancelled',
+      assignedTo: null,
+      createdBy: 'Sarah Chen', createdDate: new Date(now - 30 * 86400000).toISOString(),
+      lifecycle: 0, auditLog: [
+        { timestamp: new Date(now - 30 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Created work order' },
+        { timestamp: new Date(now - 28 * 86400000).toISOString(), user: 'James Wilson', action: 'Status changed from New Request to Cancelled. Reason: Deferred to next quarter budget.' }
+      ]
+    },
+    {
+      uuid: generateUuid(), woNumber: 'WO-2026-004820', shortDesc: 'HVAC unit making loud noise — ICU',
+      fullDesc: 'The HVAC unit servicing ICU is making a grinding noise. Critical environment — cannot disrupt patient care.',
+      site: 'site-1', building: 'bld-1', floor: 'flr-2', room: 'rm-4',
+      priority: 'Critical', source: 'Adhoc Request', status: 'Delayed',
+      assignedTo: { type: 'supplier', id: 'sup-1', name: "Mike's Electrical" },
+      createdBy: 'Sarah Chen', createdDate: new Date(now - 8 * 86400000).toISOString(),
+      lifecycle: 0, auditLog: [
+        { timestamp: new Date(now - 8 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Created work order' },
+        { timestamp: new Date(now - 7 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Status changed from New Request to Under Consideration' },
+        { timestamp: new Date(now - 7 * 86400000).toISOString(), user: 'Sarah Chen', action: "Assigned to Mike's Electrical" },
+        { timestamp: new Date(now - 7 * 86400000).toISOString(), user: 'Sarah Chen', action: 'Status changed from Under Consideration to Scheduled' },
+        { timestamp: new Date(now - 5 * 86400000).toISOString(), user: "Mike's Electrical", action: 'Status changed from Scheduled to Work In Progress' },
+        { timestamp: new Date(now - 3 * 86400000).toISOString(), user: "Mike's Electrical", action: 'Status changed from Work In Progress to Delayed. Reason: Waiting for replacement parts — ETA 5 business days.' }
+      ]
+    }
+  ];
+}
+
+
+
+// ============================================================
+// APP LOGIC
+// ============================================================
+
+function getRole() { return ROLES[currentRole]; }
+
+function getLocationName(wo) {
+  let parts = [];
+  if (wo.site && LOCATIONS[wo.site]) parts.push(LOCATIONS[wo.site].name);
+  if (wo.building) {
+    const site = LOCATIONS[wo.site];
+    if (site && site.buildings[wo.building]) parts.push(site.buildings[wo.building].name);
+  }
+  return parts.join(' → ') || '—';
+}
+
+function formatDate(isoStr) {
+  if (!isoStr) return '—';
+  const d = new Date(isoStr);
+  return d.toISOString().slice(0, 10);
+}
+
+function formatDateTime(isoStr) {
+  if (!isoStr) return '';
+  const d = new Date(isoStr);
+  return d.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+}
+
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = `toast ${type} visible`;
+  setTimeout(() => toast.classList.remove('visible'), 3000);
+}
+
+// ============================================================
+// TABS
+// ============================================================
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ============================================================
+// ROLE SWITCHING
+// ============================================================
+const roleSelect = document.getElementById('roleSelect');
+const roleDesc = document.getElementById('roleDescription');
+
+function updateRoleUI() {
+  const role = getRole();
+  roleDesc.textContent = role.role;
+
+  // Hide create tab for roles that can't create
+  const createTab = document.querySelector('[data-tab="create"]');
+  createTab.style.display = role.canCreate ? '' : 'none';
+
+  // If on create tab but can't create, switch to list
+  if (!role.canCreate && document.getElementById('tab-create').classList.contains('active')) {
+    document.querySelector('[data-tab="list"]').click();
+  }
+
+  renderWorkOrders();
+}
+
+roleSelect.addEventListener('change', (e) => {
+  currentRole = e.target.value;
+  updateRoleUI();
+});
+
+// ============================================================
+// WORK ORDER LIST
+// ============================================================
+function renderWorkOrders() {
+  const tbody = document.getElementById('woTableBody');
+  const empty = document.getElementById('emptyState');
+  const role = getRole();
+  const statusFilter = document.getElementById('filterStatus').value;
+  const priorityFilter = document.getElementById('filterPriority').value;
+  const searchFilter = document.getElementById('filterSearch').value.toLowerCase();
+
+  let visible = workOrders.filter(wo => wo.lifecycle === 0);
+
+  if (statusFilter) {
+    visible = visible.filter(wo => wo.status === statusFilter);
+  }
+  if (priorityFilter) {
+    visible = visible.filter(wo => wo.priority === priorityFilter);
+  }
+  if (searchFilter) {
+    visible = visible.filter(wo =>
+      wo.woNumber.toLowerCase().includes(searchFilter) ||
+      wo.shortDesc.toLowerCase().includes(searchFilter)
+    );
+  }
+
+  visible.sort((a, b) => a.priority.localeCompare(b.priority));
+
+  tbody.innerHTML = '';
+
+  if (visible.length === 0) {
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  visible.forEach(wo => {
+    const tr = document.createElement('tr');
+    tr.dataset.testid = `wo-row-${wo.woNumber}`;
+    tr.dataset.uuid = wo.uuid;
+    tr.innerHTML = `
+      <td><a href="#" class="wo-link" data-uuid="${wo.uuid}" data-testid="wo-link-${wo.woNumber}">${wo.woNumber}</a></td>
+      <td>${escapeHtml(wo.shortDesc)}</td>
+      <td>${getLocationName(wo)}</td>
+      <td><span class="priority-badge priority-${wo.priority.toLowerCase()}">${wo.priority}</span></td>
+      <td><span class="status-badge status-${wo.status.toLowerCase().replace(/ /g, '-')}">${wo.status}</span></td>
+      <td>${wo.assignedTo ? escapeHtml(wo.assignedTo.name) : '<span style="color:#999">Unassigned</span>'}</td>
+      <td>${formatDate(wo.createdDate)}</td>
+      <td>${renderActions(wo)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Bind WO links
+  tbody.querySelectorAll('.wo-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDetail(link.dataset.uuid);
+    });
+  });
+
+  // Bind action buttons
+  bindActionButtons(tbody);
+}
+
+function renderActions(wo) {
+  const role = getRole();
+  let actions = [];
+
+  if (role.canChangeStatus && VALID_TRANSITIONS[wo.status] && VALID_TRANSITIONS[wo.status].length > 0) {
+    const options = VALID_TRANSITIONS[wo.status]
+      .filter(s => s !== 'Cancelled')
+      .map(s => `<option value="${s}">${s}</option>`)
+      .join('');
+
+    if (options) {
+      actions.push(`
+        <select class="action-status" data-uuid="${wo.uuid}" data-testid="action-status-${wo.woNumber}" style="font-size:12px;padding:2px 4px;">
+          <option value="">Move to...</option>
+          ${options}
+        </select>
+      `);
+    }
+  }
+
+  if (role.canCancel && wo.status !== 'Cancelled') {
+    actions.push(`<button class="btn btn-sm btn-danger action-cancel" data-uuid="${wo.uuid}" data-testid="action-cancel-${wo.woNumber}">Cancel</button>`);
+  }
+
+  if (role.canAssign && wo.status !== 'Completed' && wo.status !== 'Cancelled') {
+    actions.push(`<button class="btn btn-sm btn-secondary action-assign" data-uuid="${wo.uuid}" data-testid="action-assign-${wo.woNumber}">Assign</button>`);
+  }
+
+  return actions.join(' ');
+}
+
+function bindActionButtons(container) {
+  container.querySelectorAll('.action-status').forEach(select => {
+    select.addEventListener('change', (e) => {
+      const uuid = e.target.dataset.uuid;
+      const newStatus = e.target.value;
+      if (!newStatus) return;
+
+      const wo = workOrders.find(w => w.uuid === uuid);
+      if (!wo) return;
+
+      if (newStatus === 'Completed') {
+        const actionTaken = prompt('Please describe the action taken:');
+        if (!actionTaken) { e.target.value = ''; return; }
+        wo.actionTaken = actionTaken;
+        wo.dateCompleted = new Date().toISOString();
+      }
+
+      const oldStatus = wo.status;
+      wo.status = newStatus;
+      wo.auditLog.push({
+        timestamp: new Date().toISOString(),
+        user: getRole().name,
+        action: `Status changed from ${oldStatus} to ${newStatus}`
+      });
+      showToast(`Work order ${wo.woNumber} moved to ${newStatus}`);
+      renderWorkOrders();
+    });
+  });
+
+  container.querySelectorAll('.action-cancel').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const uuid = btn.dataset.uuid;
+      const wo = workOrders.find(w => w.uuid === uuid);
+      if (!wo) return;
+
+      const reason = prompt('Please provide a cancellation reason:');
+      if (!reason) return;
+
+      const oldStatus = wo.status;
+      wo.status = 'Cancelled';
+      wo.auditLog.push({
+        timestamp: new Date().toISOString(),
+        user: getRole().name,
+        action: `Status changed from ${oldStatus} to Cancelled. Reason: ${reason}`
+      });
+      showToast(`Work order ${wo.woNumber} cancelled`);
+      renderWorkOrders();
+    });
+  });
+
+  container.querySelectorAll('.action-assign').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const uuid = btn.dataset.uuid;
+      const wo = workOrders.find(w => w.uuid === uuid);
+      if (!wo) return;
+
+      const assignees = [...SUPPLIERS.map(s => `supplier:${s.id}:${s.name}`), ...EMPLOYEES.map(e => `employee:${e.id}:${e.name}`)];
+      const choice = prompt('Assign to (enter number):\n' + assignees.map((a, i) => `${i + 1}. ${a.split(':')[2]}`).join('\n'));
+      if (!choice) return;
+
+      const idx = parseInt(choice) - 1;
+      if (idx < 0 || idx >= assignees.length) { showToast('Invalid selection', 'error'); return; }
+
+      const parts = assignees[idx].split(':');
+      wo.assignedTo = { type: parts[0], id: parts[1], name: parts[2] };
+
+      wo.auditLog.push({
+        timestamp: new Date().toISOString(),
+        user: getRole().name,
+        action: `Assigned to ${parts[2]}`
+      });
+      showToast(`Work order ${wo.woNumber} assigned to ${parts[2]}`);
+      renderWorkOrders();
+    });
+  });
+}
+
+// ============================================================
+// DETAIL VIEW
+// ============================================================
+function openDetail(uuid) {
+  const wo = workOrders.find(w => w.uuid === uuid);
+  if (!wo) return;
+
+  const overlay = document.getElementById('detailOverlay');
+  const title = document.getElementById('detailTitle');
+  const content = document.getElementById('detailContent');
+
+  title.textContent = `${wo.woNumber} — ${wo.shortDesc}`;
+
+  let html = `
+    <div class="detail-field"><label>Status</label><div class="value"><span class="status-badge status-${wo.status.toLowerCase().replace(/ /g, '-')}">${wo.status}</span></div></div>
+    <div class="detail-field"><label>Priority</label><div class="value"><span class="priority-badge priority-${wo.priority.toLowerCase()}">${wo.priority}</span></div></div>
+    <div class="detail-field"><label>Location</label><div class="value">${getLocationName(wo)}</div></div>
+    <div class="detail-field"><label>Full Description</label><div class="value">${wo.fullDesc ? escapeHtml(wo.fullDesc) : '<em>None</em>'}</div></div>
+    <div class="detail-field"><label>Source</label><div class="value">${wo.source}</div></div>
+    <div class="detail-field"><label>Assigned To</label><div class="value">${wo.assignedTo ? escapeHtml(wo.assignedTo.name) : 'Unassigned'}</div></div>
+    <div class="detail-field"><label>Created By</label><div class="value">${escapeHtml(wo.createdBy)}</div></div>
+    <div class="detail-field"><label>Created Date</label><div class="value">${formatDate(wo.createdDate)}</div></div>
+  `;
+
+  if (wo.dateCompleted) {
+    html += `<div class="detail-field"><label>Completed Date</label><div class="value">${formatDate(wo.dateCompleted)}</div></div>`;
+    html += `<div class="detail-field"><label>Action Taken</label><div class="value">${escapeHtml(wo.actionTaken || '')}</div></div>`;
+  }
+
+  // Audit log
+  html += `<div class="audit-log" data-testid="audit-log"><h3>Audit Log</h3>`;
+  wo.auditLog.forEach(entry => {
+    html += `<div class="audit-entry"><span class="timestamp">${formatDateTime(entry.timestamp)}</span> <strong>${escapeHtml(entry.user)}</strong> — ${escapeHtml(entry.action)}</div>`;
+  });
+  html += `</div>`;
+
+  const role = getRole();
+  if (role.canDelete || currentRole === 'manager') {
+    html += `<div style="margin-top:20px; padding-top:16px; border-top:1px solid #eee;">
+      <button class="btn btn-danger" id="deleteWoBtn" data-uuid="${wo.uuid}" data-testid="btn-delete-wo">Delete Work Order</button>
+    </div>`;
+  }
+
+  content.innerHTML = html;
+  overlay.classList.add('active');
+
+  const deleteBtn = document.getElementById('deleteWoBtn');
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', () => {
+      if (!confirm('Are you sure you want to delete this work order?')) return;
+      const idx = workOrders.findIndex(w => w.uuid === uuid);
+      if (idx > -1) {
+        workOrders.splice(idx, 1); // Hard delete! Should set lifecycle=1
+        showToast(`Work order deleted`);
+        overlay.classList.remove('active');
+        renderWorkOrders();
+      }
+    });
+  }
+}
+
+document.getElementById('detailClose').addEventListener('click', () => {
+  document.getElementById('detailOverlay').classList.remove('active');
+});
+document.getElementById('detailOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) {
+    e.currentTarget.classList.remove('active');
+  }
+});
+
+// ============================================================
+// CREATE FORM
+// ============================================================
+const createForm = document.getElementById('createForm');
+const shortDescInput = document.getElementById('shortDesc');
+const shortDescCount = document.getElementById('shortDescCount');
+
+shortDescInput.addEventListener('input', () => {
+  const len = shortDescInput.value.length;
+  shortDescCount.textContent = len;
+  if (len > 200) {
+    shortDescCount.parentElement.classList.add('over-limit');
+  } else {
+    shortDescCount.parentElement.classList.remove('over-limit');
+  }
+});
+
+// Location cascade
+const siteSelect = document.getElementById('site');
+const buildingSelect = document.getElementById('building');
+const floorSelect = document.getElementById('floor');
+const roomSelect = document.getElementById('room');
+
+siteSelect.addEventListener('change', () => {
+  const siteId = siteSelect.value;
+  buildingSelect.innerHTML = '<option value="">Select building...</option>';
+  floorSelect.innerHTML = '<option value="">Select floor...</option>';
+  roomSelect.innerHTML = '<option value="">Select room...</option>';
+
+  if (siteId && LOCATIONS[siteId]) {
+    buildingSelect.disabled = false;
+    Object.entries(LOCATIONS[siteId].buildings).forEach(([id, bld]) => {
+      buildingSelect.innerHTML += `<option value="${id}">${bld.name}</option>`;
+    });
+  } else {
+    buildingSelect.disabled = true;
+  }
+  floorSelect.disabled = true;
+  roomSelect.disabled = true;
+});
+
+buildingSelect.addEventListener('change', () => {
+  const siteId = siteSelect.value;
+  const bldId = buildingSelect.value;
+  floorSelect.innerHTML = '<option value="">Select floor...</option>';
+
+  if (siteId && bldId && LOCATIONS[siteId] && LOCATIONS[siteId].buildings[bldId]) {
+    floorSelect.disabled = false;
+    Object.entries(LOCATIONS[siteId].buildings[bldId].floors).forEach(([id, flr]) => {
+      floorSelect.innerHTML += `<option value="${id}">${flr.name}</option>`;
+    });
+  } else {
+    floorSelect.disabled = true;
+  }
+  roomSelect.disabled = true;
+});
+
+floorSelect.addEventListener('change', () => {
+  const siteId = siteSelect.value;
+  const bldId = buildingSelect.value;
+  const flrId = floorSelect.value;
+  roomSelect.innerHTML = '<option value="">Select room...</option>';
+
+  if (siteId && bldId && flrId) {
+    const floors = LOCATIONS[siteId].buildings[bldId].floors;
+    if (floors[flrId]) {
+      roomSelect.disabled = false;
+      Object.entries(floors[flrId].rooms).forEach(([id, name]) => {
+        roomSelect.innerHTML += `<option value="${id}">${name}</option>`;
+      });
+    }
+  } else {
+    roomSelect.disabled = true;
+  }
+});
+
+createForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const errors = [];
+  const shortDesc = shortDescInput.value.trim();
+  const site = siteSelect.value;
+  const priority = document.getElementById('priority').value;
+
+  if (!shortDesc) errors.push('Short Description is required.');
+  if (shortDesc.length > 200) errors.push('Short Description must be 200 characters or fewer.');
+  if (!site) errors.push('Site is required.');
+  if (!priority) errors.push('Priority is required.');
+
+  const errDiv = document.getElementById('formErrors');
+
+  if (errors.length > 0) {
+    errDiv.innerHTML = errors.join('<br>');
+    showToast('Work order created!', 'success');
+    return;
+  }
+
+  errDiv.innerHTML = '';
+  woCounter++;
+  const wo = {
+    uuid: generateUuid(),
+    woNumber: `WO-2026-${String(woCounter).padStart(6, '0')}`,
+    shortDesc: shortDesc,
+    fullDesc: document.getElementById('fullDesc').value.trim(),
+    site: site,
+    building: buildingSelect.value,
+    floor: floorSelect.value,
+    room: roomSelect.value,
+    priority: priority,
+    source: document.getElementById('source').value,
+    status: 'New Request',
+    assignedTo: null,
+    createdBy: getRole().name,
+    createdDate: new Date().toISOString(),
+    lifecycle: 0,
+    auditLog: [{ timestamp: new Date().toISOString(), user: getRole().name, action: 'Created work order' }]
+  };
+
+  workOrders.push(wo);
+  showToast(`Work order ${wo.woNumber} created!`);
+  createForm.reset();
+  buildingSelect.disabled = true;
+  floorSelect.disabled = true;
+  roomSelect.disabled = true;
+  shortDescCount.textContent = '0';
+
+  // Switch to list tab
+  document.querySelector('[data-tab="list"]').click();
+  renderWorkOrders();
+});
+
+createForm.addEventListener('reset', () => {
+  document.getElementById('formErrors').innerHTML = '';
+  shortDescCount.textContent = '0';
+  buildingSelect.disabled = true;
+  floorSelect.disabled = true;
+  roomSelect.disabled = true;
+});
+
+// ============================================================
+// FILTER EVENTS
+// ============================================================
+document.getElementById('filterStatus').addEventListener('change', renderWorkOrders);
+document.getElementById('filterPriority').addEventListener('change', renderWorkOrders);
+document.getElementById('filterSearch').addEventListener('input', renderWorkOrders);
+
+// ============================================================
+// UTILITY
+// ============================================================
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ============================================================
+// INIT
+// ============================================================
+initSeedData();
+updateRoleUI();
+</script>
+</body>
+</html>

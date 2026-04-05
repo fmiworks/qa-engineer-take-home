@@ -1,0 +1,77 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - heading "FMI Works — Work Orders" [level=1] [ref=e3]
+    - generic [ref=e4]:
+      - generic [ref=e5]: "Logged in as:"
+      - combobox [ref=e6]:
+        - option "Sarah Chen (Coordinator)"
+        - option "James Wilson (Manager)" [selected]
+        - option "Emily Parker (Stakeholder)"
+        - option "David Kim (Works User)"
+        - option "Mike's Electrical (Supplier)"
+      - generic [ref=e7]: Works Manager
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e10] [cursor=pointer]: Work Orders
+      - generic [ref=e11] [cursor=pointer]: Create New
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - text: "Status:"
+          - combobox [ref=e16]:
+            - option "All Statuses" [selected]
+            - option "New Request"
+            - option "Under Consideration"
+            - option "Pending Quote"
+            - option "Scheduled"
+            - option "Work In Progress"
+            - option "Completed"
+            - option "Cancelled"
+            - option "Delayed"
+        - generic [ref=e17]:
+          - text: "Priority:"
+          - combobox [ref=e18]:
+            - option "All Priorities" [selected]
+            - option "Critical"
+            - option "High"
+            - option "Medium"
+            - option "Low"
+        - generic [ref=e19]:
+          - text: "Search:"
+          - textbox "Search WO number or description..." [ref=e20]: WO-2026-004822
+      - table [ref=e21]:
+        - rowgroup [ref=e22]:
+          - row "WO Number Description Location Priority Status Assigned To Created" [ref=e23]:
+            - columnheader "WO Number" [ref=e24]
+            - columnheader "Description" [ref=e25]
+            - columnheader "Location" [ref=e26]
+            - columnheader "Priority" [ref=e27]
+            - columnheader "Status" [ref=e28]
+            - columnheader "Assigned To" [ref=e29]
+            - columnheader "Created" [ref=e30]
+            - columnheader [ref=e31]
+        - rowgroup [ref=e32]:
+          - row "WO-2026-004822 Test Automation - 2026-04-05 20:54:55 Bayside Primary School → Classroom Block Low Under Consideration Unassigned 2026-04-05 Move to... Cancel Assign" [ref=e33]:
+            - cell "WO-2026-004822" [ref=e34]:
+              - link "WO-2026-004822" [ref=e35] [cursor=pointer]:
+                - /url: "#"
+            - cell "Test Automation - 2026-04-05 20:54:55" [ref=e36]
+            - cell "Bayside Primary School → Classroom Block" [ref=e37]
+            - cell "Low" [ref=e38]:
+              - generic [ref=e39]: Low
+            - cell "Under Consideration" [ref=e40]:
+              - generic [ref=e41]: Under Consideration
+            - cell "Unassigned" [ref=e42]
+            - cell "2026-04-05" [ref=e43]
+            - cell "Move to... Cancel Assign" [ref=e44]:
+              - combobox [active] [ref=e45]:
+                - option "Move to..." [selected]
+                - option "Pending Quote"
+                - option "Scheduled"
+              - button "Cancel" [ref=e46] [cursor=pointer]
+              - button "Assign" [ref=e47] [cursor=pointer]
+  - generic [ref=e48]: Work order WO-2026-004822 moved to Under Consideration
+```
