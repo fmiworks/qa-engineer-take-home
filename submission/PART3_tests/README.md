@@ -168,16 +168,17 @@ npx playwright test work-order-status-transitions.test.ts
 ### Failed Tests
 
 #### Regression Tests
+## **Bug 1: Toast message "Work order created!" is displayed even has form error upon submittion**
 - [TC-001] - Should Not Allow Submission With Missing Short Description Required Field  
 - [TC-002] - Should Not Allow Submission With Missing Site Required Field  
 - [TC-003] - Should Not Allow Submission With Missing Priority Required Field  
 - [TC-004] - Should Not Allow Submission With Missing All Required Fields  
 
 #### Smoke Tests
+## **Bug 2: Cascading dropdown options incorrect during work order status transitions from "Under Consideration" to "Pending Quote"**
 - [TC-012] - Should Verify Cascading Dropdown Options  
 
-### Notes
-- Failures are related to **form validation** and **dropdown cascading behavior**
+
 
 
 
