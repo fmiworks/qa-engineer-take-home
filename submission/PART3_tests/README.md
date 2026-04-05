@@ -34,6 +34,22 @@ The framework is built using **Playwright** and follows a **fixture-based archit
 - Randomized test data ensures uniqueness
 - Avoids conflicts during parallel execution
 
+### Using `test.step` and Logging
+- **Step-wise execution** improves **readability**, **debugging**, and **reporting**.
+- Each **logical action** within a test can be wrapped in `test.step`:
+- Console logging within class methods provides visibility into test flow:
+```ts
+  async clickOnButton(buttonName: string): Promise<void> {
+    await test.step(`Click On Button: "${buttonName}"`, async () => {
+      const locatorElement = this.page.locator(CommonLocators.buttonLocator(buttonName));
+      expect(locatorElement.first(), `The button "${buttonName}" is NOT visible`).toBeVisible();
+      await locatorElement.first().click();
+      console.log(`The button "${buttonName}" clicked`);
+    });
+  }
+```
+- This combination ensures each test is self-descriptive and easy to debug, especially for failing tests or flaky scenarios.
+
 ---
 
 ## Code Quality & Best Practices
@@ -46,6 +62,7 @@ The framework is built using **Playwright** and follows a **fixture-based archit
 - Console logging inside class methods improves traceability
 - Test Case IDs improve traceability
 - Parallel Execution Ready
+- JSDoc usage in all class methods
 
 ---
 
