@@ -1,9 +1,38 @@
-
 # Automated Testing Framework – Work Order Management
 
 ## Overview
 
 The framework is built using **Playwright** and follows a **fixture-based architecture** to improve **reusability**, **maintainability**, and **scalability**.
+
+---
+
+## Architecture & Design
+
+### Fixture-Based Architecture
+- Role-based setup (`manager`, `worker`, `coordinator`, etc.)
+- Avoids repeated login/role setup in each test
+- Improves **reusability** and **test isolation**
+
+### Page Object Model (POM) + Components
+- `pages/` handle **page-specific actions**
+- `components/` encapsulate **reusable UI behavior and assertions**
+- Helps **separate concerns** and makes framework scalable
+
+### Core Utilities
+- `core/` contains **shared actions and assertions**
+- Reduces duplication and keeps tests clean
+
+### Constants & Locators
+- Centralized dropdown options, locators, and static values
+- Makes it easier to **update UI changes** without touching tests
+
+### Test Naming & Traceability
+- Every test has a **unique Test Case ID** `[TC-XXX]`
+- Supports **traceability**, **execution reporting**, and **defect linking**
+
+### Dynamic Test Data
+- Randomized test data ensures uniqueness
+- Avoids conflicts during parallel execution
 
 ---
 
@@ -13,46 +42,15 @@ The framework is built using **Playwright** and follows a **fixture-based archit
 work-order-tests/
 │
 ├─ src/
-│   ├─ pages/                 # Page Object Models
-│   │   ├─ createWorkOrderPage.ts
-│   │   ├─ workOrderPage.ts
-│   │   └─ ...
-│   │
-│   ├─ components/            # UI Components (actions + assertions)
-│   │   ├─ dropdownComponent.ts
-│   │   ├─ modalComponent.ts
-│   │   └─ ...
-│   │
-│   ├─ core/                  # Shared Playwright actions & assertions
-│   │   ├─ commonUserActionsPage.ts
-│   │   ├─ commonAssertionsPage.ts
-│   │   └─ ...
-│   │
-│   ├─ fixtures/              # Playwright fixtures
-│   │   ├─ roleFixtures.ts
-│   │   └─ workOrderFixture.ts
-│   │
-│   ├─ constants/             # Static values
-│   │   ├─ dropdownConstants.ts
-│   │   └─ ...
-│   │
-│   ├─ utils/                 # Pure helper utilities
-│   │   ├─ dateTimeUtils.ts
-│   │   ├─ randomUtils.ts
-│   │   └─ ...
-│   │
-│   └─ locators/              # Reusable locators
-│       ├─ commonLocators.ts
-│       └─ ...
+│   ├─ pages/           # Page Objects
+│   ├─ components/      # Reusable UI components
+│   ├─ core/            # Shared actions & assertions
+│   ├─ fixtures/        # Role / Work Order setup
+│   ├─ constants/       # Dropdowns, statuses, etc.
+│   ├─ utils/           # Helper functions
+│   └─ locators/        # Common selectors
 │
-├─ tests/                     # Test files only
-│   ├─ ui-test/
-│      ├─ smoke/
-│      │   └─ work-order-status-transitions.test.ts
-│      │
-│      ├─ regression/
-│          └─ create-order-form-validation.test.ts
-│
+├─ tests/               # Test files only
 ├─ playwright.config.ts
 ├─ tsconfig.json
 ├─ package.json
@@ -63,55 +61,19 @@ work-order-tests/
 
 ## Test Coverage
 
-### Role-Based Testing
-Validates access permissions and actions for different user roles:
-- Manager  
-- Worker  
-- Supplier  
-- Coordinator  
-- Stakeholder  
-
-### Status Workflow Testing
-Covers the full lifecycle of a work order:
-- Creation  
-- Assignment  
-- In Progress  
-- Completion  
-- Cancellation  
-- Closure  
-
-### Table Validation
-Validates that submitted work order data is correctly displayed in the table:
-- Work Order ID, Status, Priority, Description    
-- Location (Site, Building, Floor, Room)  
-
-### Cascading Dropdown Validation
-Verifies that **status dropdown options dynamically update** based on the current work order status.
-
-### Negative Field Validation
-Ensures:
-- Required fields validation  
-- Proper error message display  
-- Form submission blocking  
+- **Role-Based Testing:** Validates access permissions for Manager, Worker, Supplier, Coordinator, Stakeholder
+- **Status Workflow Testing:** Covers full cycle `New Request → Under Consideration → Pending Quote → Scheduled → Work In Progress → Completed`. Additional statuses: `Cancelled`, `Delayed`
+- **Table Validation:** Checks Work Order ID, Status, Priority, Description, Location
+- **Cascading Dropdown Validation:** Verifies dropdown options based on current status
+- **Negative Field Validation:** Ensures required fields validation, proper error message display, and blocked submissions
 
 ---
 
 ## Test Structure & Naming Convention
-Each test case follows a **tagging format** using a unique **Test Case ID**:
 
-```
-[TC-XXX] - Test Description
-```
-
-**Example:**
-- `[TC-001] - Should Allow Manager To Cancel Work Order`  
- 
-Enables:
-- Test case traceability  
-- Execution reporting  
-- Requirement mapping  
-- Defect linking  
-
+- Test Case ID format: `[TC-XXX] - Test Description`
+- Enables traceability, execution reporting, and requirement mapping
+- Example: `[TC-001] - Should Allow Manager To Cancel Work Order`
 
 ---
 
@@ -155,7 +117,6 @@ npx playwright install
 4. **Run Tests**
 
 ```bash
-cd submission/PART3_tests
 npx playwright test
 ```
 
@@ -167,12 +128,11 @@ npx playwright test tests/work-order-status-transitions.test.ts
 
 ---
 
-## Test Execution Summary - Current Status
+## Test Execution Summary
 
-### Result
 - 11 Passed  
 - 5 Failed  
-- Duration: 15.3s  
+- Duration: 15.3s
 
 ### Failed Tests
 
@@ -187,8 +147,35 @@ npx playwright test tests/work-order-status-transitions.test.ts
 
 ### Notes
 - Failures are related to **form validation** and **dropdown cascading behavior**
-- Requires investigation on:
-  - Required field validation handling
-  - Cascading dropdown data loading
+- Requires investigation on required field validation handling and cascading dropdown data loading
 
 ---
+
+## Code Quality & Best Practices
+
+### Strengths
+- Fixture-based isolation prevents test interference
+- Page Object Model and component pattern improve maintainability
+- Randomized test data ensures uniqueness
+- Step-wise assertions improve readability and debugging
+- Test Case IDs improve traceability
+
+### Recommendations
+- Remove hardcoded waits (`waitForTimeout`) and rely on auto-wait
+- Break long tests into smaller focused units
+- Integrate reports with CI dashboards
+- Consider adding API layer tests for faster regression
+- Ensure cleanup for test-created data
+- Stable locators with data attributes where possible
+
+### Patterns Used
+- Fixture Pattern (role-based, data setup) ✅
+- Page Object + Component Pattern ✅
+- Constants & Locators ✅
+- Randomized Test Data ✅
+- Test Case ID + Descriptive Names ✅
+- Step-wise Assertions ✅
+- Retry for Flaky Tests ✅
+- Auto Wait / Assertion Wait ✅
+- Parallel Execution Ready ✅
+
