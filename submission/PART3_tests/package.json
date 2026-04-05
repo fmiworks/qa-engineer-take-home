@@ -1,0 +1,25 @@
+{
+  "name": "qa-engineer-take-home",
+  "version": "1.0.0",
+  "description": "**Role:** QA Engineer — FMI Software **Time allowed:** 3–4 hours (untimed, but we expect roughly this level of effort)",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fmiworks/qa-engineer-take-home.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fmiworks/qa-engineer-take-home/issues"
+  },
+  "homepage": "https://github.com/fmiworks/qa-engineer-take-home#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0"
+  }
+}

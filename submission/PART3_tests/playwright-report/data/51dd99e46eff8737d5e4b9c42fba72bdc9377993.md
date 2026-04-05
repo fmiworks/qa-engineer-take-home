@@ -1,0 +1,70 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - heading "FMI Works — Work Orders" [level=1] [ref=e3]
+    - generic [ref=e4]:
+      - generic [ref=e5]: "Logged in as:"
+      - combobox [ref=e6]:
+        - option "Sarah Chen (Coordinator)"
+        - option "James Wilson (Manager)" [selected]
+        - option "Emily Parker (Stakeholder)"
+        - option "David Kim (Works User)"
+        - option "Mike's Electrical (Supplier)"
+      - generic [ref=e7]: Works Manager
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e10] [cursor=pointer]: Work Orders
+      - generic [ref=e11] [cursor=pointer]: Create New
+    - generic [ref=e13]:
+      - heading "Create Work Order" [level=2] [ref=e14]
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - generic [ref=e18]: Short Description *
+            - textbox "Short Description *" [ref=e19]
+            - generic [ref=e20]: 0/200
+          - generic [ref=e21]:
+            - generic [ref=e22]: Full Description
+            - textbox "Full Description" [ref=e23]
+          - generic [ref=e24]:
+            - generic [ref=e25]: Site *
+            - combobox "Site *" [ref=e26]:
+              - option "Select site..."
+              - option "Melbourne General Hospital" [selected]
+              - option "Sunrise Aged Care"
+              - option "Bayside Primary School"
+          - generic [ref=e27]:
+            - generic [ref=e28]: Building
+            - combobox "Building" [ref=e29]:
+              - option "Select building..." [selected]
+              - option "Main Wing"
+              - option "East Annex"
+          - generic [ref=e30]:
+            - generic [ref=e31]: Floor
+            - combobox "Floor" [disabled] [ref=e32]:
+              - option "Select floor..." [selected]
+          - generic [ref=e33]:
+            - generic [ref=e34]: Room
+            - combobox "Room" [disabled] [ref=e35]:
+              - option "Select room..." [selected]
+          - generic [ref=e36]:
+            - generic [ref=e37]: Priority *
+            - combobox "Priority *" [ref=e38]:
+              - option "Select priority..."
+              - option "Critical" [selected]
+              - option "High"
+              - option "Medium"
+              - option "Low"
+          - generic [ref=e39]:
+            - generic [ref=e40]: Source
+            - combobox "Source" [ref=e41]:
+              - option "Adhoc Request" [selected]
+              - option "Planned Job"
+        - generic [ref=e42]:
+          - button "Create Work Order" [active] [ref=e43] [cursor=pointer]
+          - button "Clear" [ref=e44] [cursor=pointer]
+        - generic [ref=e45]: Short Description is required.
+  - generic [ref=e46]: Work order created!
+```

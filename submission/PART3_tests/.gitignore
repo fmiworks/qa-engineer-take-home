@@ -1,0 +1,15 @@
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Playwright test reports and traces
+/playwright-report/
+/test-results/
+/trace.zip
+/test-failed-*.png
+/error-context.md
